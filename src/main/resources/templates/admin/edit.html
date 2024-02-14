@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xml:lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -22,10 +23,20 @@
     <input id="u" type="text" th:field="*{username}" th:value="${user.username}">
     <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</div>
     <br>
-    <label for="a">Role</label>
-    <input id="a" type="text" th:field="*{authorities}" th:value="${user.getRoleNames()}">
-    <div style="color: red" th:if="${#fields.hasErrors('authorities')}" th:errors="*{authorities}">name error</div>
-    <br>
+
+    <!--    <label>Roles:-->
+    <!--        <input type="checkbox" name="roles"-->
+    <!--               th:each="role : ${roles}"-->
+    <!--               th:text="${role.role}"-->
+    <!--               th:value="${role.id}"-->
+    <!--               th:field="*{roles}"/>-->
+    <!--    </label><br>-->
+
+    <label for="selectedRoles">Select Roles:</label>
+    <select id="selectedRoles" name="selectedRoles" th:field="*{roles}" multiple>
+        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"
+                th:selected="${user.roles.contains(role)}"></option>
+    </select>
     <input type="hidden" th:field="*{id}" th:value="${user.id}">
     <input type="submit" value="save">
 </form>

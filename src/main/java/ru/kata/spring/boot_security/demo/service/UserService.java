@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleDao;
 import ru.kata.spring.boot_security.demo.repositories.UserDao;
 
 import javax.persistence.EntityNotFoundException;
@@ -15,9 +16,11 @@ import java.util.Collection;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserDao userDao;
+    private final RoleDao roleDao;
 
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao, RoleDao roleDao) {
         this.userDao = userDao;
+        this.roleDao = roleDao;
     }
 
     @Override
@@ -65,8 +68,8 @@ public class UserService implements UserDetailsService {
     }
 
 
-//    @Transactional(readOnly = true)
-//    public User find(User user) {
-//        return get(user.getId());
-//    }
+    @Transactional(readOnly = true)
+    public User find(User user) {
+        return get(user.getId());
+    }
 }

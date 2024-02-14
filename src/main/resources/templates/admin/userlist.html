@@ -20,12 +20,12 @@
         <th>Delete</th>
         <th>Edit</th>
     </tr>
-    <tr th:each="user : ${userList}">
+    <tr th:each="user : ${userlist}">
         <td th:utext="${user.name}">Name</td>
         <td th:utext="${user.surname}">Surname</td>
         <td th:utext="${user.email}">Email</td>
         <td th:utext="${user.username}">Username</td>
-        <td th:utext="${user.getRoleNames()}">Role</td>
+        <td th:utext="${user.getRoles()}">Role</td>
 
         <td>
             <form th:method="post" th:action="@{/admin/{i}/del(i=${user.getId()})}">

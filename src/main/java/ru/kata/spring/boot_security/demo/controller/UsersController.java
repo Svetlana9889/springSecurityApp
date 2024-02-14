@@ -23,7 +23,7 @@ public class UsersController {
 
         User user = userDao.findUserByUsername(principal.getName());
         model.addAttribute("user",user);
-        return "/user/user";
+        return "/user/show";
     }
 }
 

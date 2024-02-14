@@ -25,16 +25,22 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
     public User() {
     }
 
-    public User(String name, String surname, String email, String username, String password, Collection<Role> roles) {
+    public User(long id, String name, String surname, String email, String username, String password, Collection<Role> roles) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.username = username;
         this.password = password;
         this.roles = roles;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
@@ -78,6 +84,7 @@ public class User implements UserDetails {
     ,inverseJoinColumns =  @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
+
 
     public Collection<Role> getRoles() {
         return roles;
@@ -127,4 +134,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

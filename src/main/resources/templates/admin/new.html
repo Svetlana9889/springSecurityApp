@@ -25,6 +25,10 @@
         <input id="u" type="text" th:field="*{username}" th:value="${user.username}">
         <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</div>
         <br>
+        <label for="u">Password</label>
+        <input id="u" type="text" th:field="*{password}" th:value="${user.password}">
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">name error</div>
+        <br>
         <!--        <label for="a">Role</label>-->
         <!--        <input id="a" type="text" th:field="*{authorities}" th:value="${user.authorities}">-->
         <!--        <div style="color: red" th:if="${#fields.hasErrors('authorities')}" th:errors="*{authorities}">name error</div>-->
@@ -33,7 +37,7 @@
             <select name="roles" th:multiple="true">
                 <option th:each="role : ${roles}"
                         th:value="${role.getId()}"
-                        th:text="${role.getName()}">
+                        th:text="${role.getRole()}">
                 </option>
             </select>
         </label>
