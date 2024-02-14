@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xml:lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/admin/{i}/edit(i=${user.id})}" th:object="${user}">
+    <label for="n">Name</label>
+    <input id="n" type="text" th:field="*{name}" th:value="${user.name}">
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
+    <br>
+    <label for="s">Surname</label>
+    <input id="s" type="text" th:field="*{surname}" th:value="${user.surname}">
+    <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">name error</div>
+    <br>
+    <label for="e">Email</label>
+    <input id="e" type="text" th:field="*{email}" th:value="${user.email}">
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">name error</div>
+    <br>
+    <label for="u">Username</label>
+    <input id="u" type="text" th:field="*{username}" th:value="${user.username}">
+    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</div>
+    <br>
+    <label for="a">Role</label>
+    <input id="a" type="text" th:field="*{authorities}" th:value="${user.getRoleNames()}">
+    <div style="color: red" th:if="${#fields.hasErrors('authorities')}" th:errors="*{authorities}">name error</div>
+    <br>
+    <input type="hidden" th:field="*{id}" th:value="${user.id}">
+    <input type="submit" value="save">
+</form>
+</body>
+</html>
