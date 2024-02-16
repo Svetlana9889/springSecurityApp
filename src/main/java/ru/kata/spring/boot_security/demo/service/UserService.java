@@ -12,11 +12,9 @@ import ru.kata.spring.boot_security.demo.repositories.UserDao;
 
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.util.Collection;
 
 @Service
-@Transactional
 public class UserService implements UserDetailsService {
     private final UserDao userDao;
     private final RoleDao roleDao;
@@ -74,7 +72,7 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findUserByUsername(username);
+        User user = userDao.findByUsername(username);
         if(user==null){
             throw new UsernameNotFoundException("No Username");
         }
@@ -85,7 +83,7 @@ public class UserService implements UserDetailsService {
 
 
     public User showUser(String username) {
-        return userDao.findUserByUsername(username);
+        return userDao.findByUsername(username);
 
     }
 
