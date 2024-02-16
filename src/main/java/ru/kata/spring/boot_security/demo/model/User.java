@@ -1,11 +1,27 @@
 package ru.kata.spring.boot_security.demo.model;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Entity
 @Table(name = "users")
@@ -13,23 +29,38 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id")
+    private Long id;
     @Column(name = "name")
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]*$", message = "Name should be contains only from letters ")
     private String name;
     @Column(name = "surname")
+    @NotEmpty(message = "Surname should not be empty")
+    @Size(min = 2, max = 30, message = "Surname should be between 2 and 30 characters")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]*$", message = "Name should be contains only from letters ")
     private String surname;
     @Column(name = "email")
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "Email should be valid")
     private String email;
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
-
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles"
+            , joinColumns = @JoinColumn(name = "user_id")
+            , inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles;
 
     public User() {
     }
 
-    public User(long id, String name, String surname, String email, String username, String password, Collection<Role> roles) {
+    public User(Long id, String name, String surname, String email, String username, String password, Collection<Role> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -39,70 +70,21 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public long getId() {
-        return id;
-    }
+    public Collection<String> getRoleNames() {
+        Collection<String> roleNames = new ArrayList<>();
 
-    public void setId(long id) {
-        this.id = id;
-    }
+        for (Role role : roles) {
+            roleNames.add(role.getRole());
+        }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    ,inverseJoinColumns =  @JoinColumn(name = "role_id")
-    )
-    private Collection<Role> roles;
-
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+        return roleNames;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles != null
-                ? new HashSet<Role>(roles)
+                ? new HashSet<>(roles)
                 : Collections.emptySet();
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -135,4 +117,51 @@ public class User implements UserDetails {
         return true;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 }

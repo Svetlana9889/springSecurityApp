@@ -9,21 +9,31 @@ import ru.kata.spring.boot_security.demo.repositories.UserDao;
 import java.security.Principal;
 
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.UserDao;
+
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/user")
-public class UsersController {
+public class UserController {
     private final UserDao userDao;
 
-    public UsersController(UserDao userDao) {
+    public UserController(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    @GetMapping("/user")
-    public String showUser(Principal principal, Model model){
-
+    @GetMapping
+    public String showUser(Principal principal, Model model) {
         User user = userDao.findUserByUsername(principal.getName());
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "/user/show";
     }
+
+
 }
 
