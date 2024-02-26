@@ -54,7 +54,6 @@ public class AdminController {
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "admin/new";
-        user.setPassword(user.getPassword());
         userService.create(user);
         return "redirect:";
     }
